@@ -1,0 +1,56 @@
+.change-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    background-color: #fff;
+    width: 97%;
+    height: 522px;
+    border: 1px solid red;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    justify-content: center;
+}
+
+.change-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10%;
+    height: 100%;
+
+    .change-form_labels {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        label {
+            line-height: 20px;
+            margin-bottom: 8px;
+            color: #393939;
+            font-size: 14px;
+        }
+
+        input,
+        select {
+            padding: 10px 16px;
+            width: 380px;
+            height: 40px;
+        }
+
+        #amount {
+            text-align: end;
+            -moz-appearance: textfield;
+
+            &::-webkit-inner-spin-button,
+            &::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+        }
+    }
+}

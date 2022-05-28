@@ -1,0 +1,29 @@
+.app-container {
+    position: relative;
+    height: 100vh;
+}
+
+.coverPage {
+    background-image: url('../../assets/coverPage-cel.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: 359px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @media (min-width: 1024px) {
+        background-image: url('../../assets/coverPage.png');
+        height: 480px;
+    }
+
+    p {
+        font-size: 34px;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 8%;
+        line-height: 39px;
+    }
+}
