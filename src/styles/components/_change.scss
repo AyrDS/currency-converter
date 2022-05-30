@@ -6,7 +6,7 @@
     bottom: 0;
     margin: auto;
     background-color: #fff;
-    width: 97%;
+    width: 1381px;
     height: 522px;
     border: 1px solid red;
     display: grid;
@@ -53,4 +53,38 @@
             }
         }
     }
+}
+
+.change-info {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    margin-top: 67px;
+    // margin-left: 119px;
+
+    .change-info_containerCurrency {
+        margin-top: 55px;
+        font-size: 20px;
+        line-height: 25px;
+
+        p {
+
+            &:first-child {
+                margin-bottom: 12px;
+            }
+        }
+    }
+}
+
+.change-info_current {
+    font-size: 30px;
+    color: #757575;
+    line-height: 37.5px;
+}
+
+.change-info_exchange {
+    font-size: 40px;
+    line-height: 50px;
+    color: #323232;
+    margin-top: 16px;
 }
