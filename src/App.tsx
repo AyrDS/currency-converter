@@ -14,7 +14,11 @@ const App = () => {
   const [ratesOptions, setRatesOptions] = useState<string[]>([])
 
   useEffect(() => {
-    
+    Promise.all([fetch(promises[0]), fetch(promises[1])])
+      .then(responses => Promise.all(responses.map(response => response.json())))
+      .then(data => {
+        setRatesOptions(Object.keys(data[0].rates));
+      })
   }, []);
 
 
@@ -31,9 +35,12 @@ const App = () => {
             <input type="number" id="amount" min={0} />
           </div>
 
-          {/* <SelectCurrency
+          <SelectCurrency
             labelText="From"
-          /> */}
+            rates={ratesOptions}
+            valueSelect="EUR"
+            onChangeCurrency={() => { }}
+          />
 
           {/* <SelectCurrency
             labelText="To"
