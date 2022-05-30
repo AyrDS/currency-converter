@@ -38,19 +38,19 @@ const Change = () => {
                     <input type="number" id="amount" value={amount} onChange={handleAmountChange} min='1' />
                 </div>
 
-                <SelectCurrency
+                {/* <SelectCurrency
                     labelText="From"
                     rates={rates}
                     valueSelect={fromCurrency}
                     onChangeCurrency={({ target }: React.ChangeEvent<HTMLSelectElement>) => setFromCurrency(target.value)}
-                />
+                /> */}
 
-                <SelectCurrency
+                {/* <SelectCurrency
                     labelText="To"
                     rates={rates}
                     valueSelect={toCurrency}
                     onChangeCurrency={({ target }: React.ChangeEvent<HTMLSelectElement>) => setToCurrency(target.value)}
-                />
+                /> */}
 
             </form>
 

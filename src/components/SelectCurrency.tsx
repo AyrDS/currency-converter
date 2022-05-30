@@ -1,7 +1,7 @@
 
 interface SelectCurrencyProps {
     labelText: string;
-    rates: string[];
+    rates: [string, {}][];
     valueSelect: string;
     onChangeCurrency: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
@@ -12,8 +12,8 @@ const SelectCurrency = ({ labelText, rates, valueSelect, onChangeCurrency }: Sel
             <label htmlFor={labelText} > {labelText} </label>
             <select id={labelText} value={valueSelect} onChange={onChangeCurrency}  >
                 {
-                    rates.map(rate => (
-                        <option key={rate} value={rate} > {rate} </option>
+                    rates.map((rate) => (
+                        <option key={rate[0]} ></option>
                     ))
                 }
             </select>
