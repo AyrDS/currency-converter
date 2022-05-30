@@ -12,12 +12,19 @@ const promises: string[] = [`https://api.vatcomply.com/rates?base=USD`, 'https:/
 const App = () => {
 
   const [ratesOptions, setRatesOptions] = useState<string[]>([]) //Todas las opciones para los selects
+
   const [allCurrencies, setAllCurrencies] = useState() //Todas las monedas
-  const [currentFromCurrency, setCurrentFromCurrency] = useState() //Moneda actual de origen seleccionada
+  const [currentFromCurrency, setCurrentFromCurrency] = useState<CurrentCurrencyType>() //Moneda actual de origen seleccionada
+  const [currentToCurrency, setCurrentToCurrency] = useState<CurrentCurrencyType>() //Moneda actual de destino seleccionada
+
   const [amount, setAmount] = useState<number>(1) //Cantidad a convertir
 
-  const [fromCurrency, setFromCurrency] = useState<string>('USD'); // Moneda "DE"
-  const [toCurrency, setToCurrency] = useState<string>('EUR'); //Moneda "A"
+  const [totalExchange, setTotalExchange] = useState<number>(); //Cantidad convertida
+
+  const [rates, setRates] = useState<any>() //Todas las tasas de cambio
+
+  const [fromCurrencyInput, setFromCurrencyInput] = useState<string>('USD'); // Moneda "DE"
+  const [toCurrencyInput, setToCurrencyInput] = useState<string>('EUR'); //Moneda "A"
 
   useEffect(() => {
     Promise.all([fetch(promises[0]), fetch(promises[1])])
@@ -25,21 +32,47 @@ const App = () => {
       .then(data => {
         setRatesOptions(Object.keys(data[0].rates));
         setAllCurrencies(data[1]);
+        setRates(data[0].rates);
+        console.log(data[0]);
       })
   }, []);
+
+  useEffect(() => {
+    if (allCurrencies) {
+      const currentFromCurrency = Object.getOwnPropertyDescriptor(allCurrencies, fromCurrencyInput);
+      const currentToCurrency = Object.getOwnPropertyDescriptor(allCurrencies, toCurrencyInput);
+      setCurrentFromCurrency(currentFromCurrency?.value);
+      setCurrentToCurrency(currentToCurrency?.value);
+    }
+  }, [allCurrencies, fromCurrencyInput, toCurrencyInput]);
+
+  useEffect(() => {
+    if (rates) {
+      const fromCurrency = Number(rates[fromCurrencyInput].toFixed(2));
+      const toCurrency = Number(rates[toCurrencyInput].toFixed(2));
+      console.log(toCurrency);
+      console.log(fromCurrency);
+      setTotalExchange(amount * (toCurrency / fromCurrency));
+    }
+  }, [rates, fromCurrencyInput, toCurrencyInput, amount]);
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(Number(e.target.value))
   }
 
+  const handleSwipe = () => {
+    setFromCurrencyInput(toCurrencyInput);
+    setToCurrencyInput(fromCurrencyInput);
+  }
+
   return (
     <main className="app-container" >
       <div className="coverPage">
-        <p>Convert {amount.toFixed(2)} {allCurrencies?.[fromCurrency]}  </p>
+        <p>Convert {amount.toFixed(2)} {currentFromCurrency?.name} to {currentToCurrency?.name} - {currentFromCurrency?.symbol} to {currentToCurrency?.symbol} </p>
       </div>
       <section className="change-container" >
 
-        <form className="change-form" >
+        <form className="change-form" onSubmit={e => e.preventDefault()} >
           <div className="change-form_labels" >
             <label htmlFor="amount" >Amount</label>
             <input type="number" id="amount" min={0} value={amount} onChange={handleAmountChange} />
@@ -48,26 +81,28 @@ const App = () => {
           <SelectCurrency
             labelText="From"
             rates={ratesOptions}
-            valueSelect={fromCurrency}
+            valueSelect={fromCurrencyInput}
             onChangeCurrency={() => { }}
           />
 
           <SelectCurrency
             labelText="To"
             rates={ratesOptions}
-            valueSelect={toCurrency}
+            valueSelect={toCurrencyInput}
             onChangeCurrency={() => { }}
           />
 
+          <button
+            onClick={handleSwipe}
+          >
+            click
+          </button>
         </form>
 
-
-
         <div className="change-info" >
-
           <div>
-            <p className="change-info_current" >1 EURO =</p>
-            <p className="change-info_exchange" > 1.07 USD </p>
+            <p className="change-info_current" >{amount.toFixed(2)} {currentFromCurrency?.name} =</p>
+            <p className="change-info_exchange" > {totalExchange?.toFixed(2)} {currentToCurrency?.name} </p>
           </div>
 
           <div className="change-info_containerCurrency" >
