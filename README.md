@@ -4,5 +4,5 @@ Aplicación de cambio de divisas utilizando la api de [vatcomply](https://www.va
 
 
 # INSTALACIÓN
-- Clona el código: > git clone https://github.com/AyrDS/reactCoder.git
+- Clona el código: > git clone https://github.com/AyrDS/ppi-front.git
 - Corre la aplicación: > npm start
