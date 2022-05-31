@@ -3,15 +3,30 @@ import SelectCurrency from './components/SelectCurrency';
 import Loading from './components/Loading';
 import switchIcon from './assets/button.png'
 import alertIcon from './assets/alertIcon.png';
+import { useForm } from "./hooks/useForm";
 
 type CurrentCurrencyType = {
   name: string;
   symbol: string;
 }
 
+interface FormData {
+  amount: number;
+  fromCurrencyInput: string;
+  toCurrencyInput: string;
+}
+
 const promises: string[] = [`https://api.vatcomply.com/rates?base=USD`, 'https://api.vatcomply.com/currencies'];
 
 const App = () => {
+
+  const { form, handleChange, setForm } = useForm<FormData>({
+    amount: 1.00,
+    fromCurrencyInput: 'USD',
+    toCurrencyInput: 'EUR'
+  });
+
+  const { amount, fromCurrencyInput, toCurrencyInput } = form
 
   const [ratesOptions, setRatesOptions] = useState<[string, []][]>([])
 
@@ -19,14 +34,9 @@ const App = () => {
   const [currentFromCurrency, setCurrentFromCurrency] = useState<CurrentCurrencyType>()
   const [currentToCurrency, setCurrentToCurrency] = useState<CurrentCurrencyType>()
 
-  const [amount, setAmount] = useState<number>(1)
-
   const [totalExchange, setTotalExchange] = useState<number>();
 
   const [rates, setRates] = useState<any>()
-
-  const [fromCurrencyInput, setFromCurrencyInput] = useState<string>('USD');
-  const [toCurrencyInput, setToCurrencyInput] = useState<string>('EUR');
 
   useEffect(() => {
     Promise.all([fetch(promises[0]), fetch(promises[1])])
@@ -47,7 +57,6 @@ const App = () => {
     }
   }, [allCurrencies, fromCurrencyInput, toCurrencyInput]);
 
-
   useEffect(() => {
     if (rates) {
       const fromCurrency = Number(rates[fromCurrencyInput].toFixed(2));
@@ -58,14 +67,17 @@ const App = () => {
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (Number(e.target.value) < 0) {
-      return setAmount(prev => prev);
+      return setForm(prev => ({ ...prev, amount: prev.amount }))
     }
-    setAmount(Number(e.target.value))
+    handleChange(e);
   }
 
   const handleSwitch = () => {
-    setFromCurrencyInput(toCurrencyInput);
-    setToCurrencyInput(fromCurrencyInput);
+    setForm({
+      ...form,
+      fromCurrencyInput: toCurrencyInput,
+      toCurrencyInput: fromCurrencyInput
+    })
   }
 
   if (!rates) {
@@ -82,30 +94,32 @@ const App = () => {
         <form className="change-form" onSubmit={e => e.preventDefault()} >
           <div className="change-form_labels" >
             <label htmlFor="amount" >Amount</label>
-            <input type="number" id="amount" min={0} value={amount} onChange={handleAmountChange} />
+            <input name="amount" type="number" id="amount" min={0} value={amount} onChange={handleAmountChange} />
           </div>
 
           <div className="container-switch">
             <SelectCurrency
+              name="fromCurrencyInput"
               labelText="From"
               rates={ratesOptions}
               valueSelect={fromCurrencyInput}
-              onChangeCurrency={(e) => { setFromCurrencyInput(e.target.value) }}
+              onChangeCurrency={handleChange}
             />
             <img src={switchIcon} alt="switch" className="switch-btn" onClick={handleSwitch} />
           </div>
 
           <SelectCurrency
+            name="toCurrencyInput"
             labelText="To"
             rates={ratesOptions}
             valueSelect={toCurrencyInput}
-            onChangeCurrency={(e) => { setToCurrencyInput(e.target.value) }}
+            onChangeCurrency={handleChange}
           />
         </form>
 
         <div className="change-info" >
           <div>
-            <p className="change-info_current" >{amount.toFixed(2)} {currentFromCurrency?.name} =</p>
+            <p className="change-info_current" >{Number(amount).toFixed(2)} {currentFromCurrency?.name} =</p>
             <p className="change-info_exchange" > {totalExchange?.toFixed(2)} {currentToCurrency?.name} </p>
           </div>
 
