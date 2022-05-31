@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import SelectCurrency from "./components/SelectCurrency";
-
+import SelectCurrency from './components/SelectCurrency';
+import Loading from './components/Loading';
+import switchIcon from './assets/button.png'
+import alertIcon from './assets/alertIcon.png';
 
 type CurrentCurrencyType = {
   name: string;
@@ -11,20 +13,20 @@ const promises: string[] = [`https://api.vatcomply.com/rates?base=USD`, 'https:/
 
 const App = () => {
 
-  const [ratesOptions, setRatesOptions] = useState<[string, {}][]>([]) //Todas las opciones para los selects
+  const [ratesOptions, setRatesOptions] = useState<[string, []][]>([])
 
-  const [allCurrencies, setAllCurrencies] = useState<any>() //Todas las monedas
-  const [currentFromCurrency, setCurrentFromCurrency] = useState<CurrentCurrencyType>() //Moneda actual de origen seleccionada
-  const [currentToCurrency, setCurrentToCurrency] = useState<CurrentCurrencyType>() //Moneda actual de destino seleccionada
+  const [allCurrencies, setAllCurrencies] = useState<{}>()
+  const [currentFromCurrency, setCurrentFromCurrency] = useState<CurrentCurrencyType>()
+  const [currentToCurrency, setCurrentToCurrency] = useState<CurrentCurrencyType>()
 
-  const [amount, setAmount] = useState<number>(1) //Cantidad a convertir
+  const [amount, setAmount] = useState<number>(1)
 
-  const [totalExchange, setTotalExchange] = useState<number>(); //Cantidad convertida
+  const [totalExchange, setTotalExchange] = useState<number>();
 
-  const [rates, setRates] = useState<any>() //Todas las tasas de cambio
+  const [rates, setRates] = useState<any>()
 
-  const [fromCurrencyInput, setFromCurrencyInput] = useState<string>('USD'); // Moneda "DE"
-  const [toCurrencyInput, setToCurrencyInput] = useState<string>('EUR'); //Moneda "A"
+  const [fromCurrencyInput, setFromCurrencyInput] = useState<string>('USD');
+  const [toCurrencyInput, setToCurrencyInput] = useState<string>('EUR');
 
   useEffect(() => {
     Promise.all([fetch(promises[0]), fetch(promises[1])])
@@ -61,16 +63,19 @@ const App = () => {
     setAmount(Number(e.target.value))
   }
 
-  const handleSwipe = () => {
+  const handleSwitch = () => {
     setFromCurrencyInput(toCurrencyInput);
     setToCurrencyInput(fromCurrencyInput);
   }
 
+  if (!rates) {
+    return <Loading />
+  }
 
   return (
     <main className="app-container" >
       <div className="coverPage">
-        <p>Convert {amount.toFixed(2)} {currentFromCurrency?.name} to {currentToCurrency?.name} - {currentFromCurrency?.symbol} to {currentToCurrency?.symbol} </p>
+        <p>Convert {amount} {currentFromCurrency?.name} to {currentToCurrency?.name} - {currentFromCurrency?.symbol} to {currentToCurrency?.symbol} </p>
       </div>
       <section className="change-container" >
 
@@ -80,12 +85,15 @@ const App = () => {
             <input type="number" id="amount" min={0} value={amount} onChange={handleAmountChange} />
           </div>
 
-          <SelectCurrency
-            labelText="From"
-            rates={ratesOptions}
-            valueSelect={fromCurrencyInput}
-            onChangeCurrency={(e) => { setFromCurrencyInput(e.target.value) }}
-          />
+          <div className="container-switch">
+            <SelectCurrency
+              labelText="From"
+              rates={ratesOptions}
+              valueSelect={fromCurrencyInput}
+              onChangeCurrency={(e) => { setFromCurrencyInput(e.target.value) }}
+            />
+            <img src={switchIcon} alt="switch" className="switch-btn" onClick={handleSwitch} />
+          </div>
 
           <SelectCurrency
             labelText="To"
@@ -93,12 +101,6 @@ const App = () => {
             valueSelect={toCurrencyInput}
             onChangeCurrency={(e) => { setToCurrencyInput(e.target.value) }}
           />
-
-          <button
-            onClick={handleSwipe}
-          >
-            click
-          </button>
         </form>
 
         <div className="change-info" >
@@ -111,6 +113,11 @@ const App = () => {
             <p>1 {currentToCurrency?.name} =  {(rates?.[fromCurrencyInput] / rates?.[toCurrencyInput]).toFixed(2)} {currentFromCurrency?.symbol} </p>
             <p>1 {currentFromCurrency?.name} = {(rates?.[toCurrencyInput] / rates?.[fromCurrencyInput]).toFixed(2)} {currentToCurrency?.symbol}</p>
           </div>
+
+          <div className="change-alert" >
+            <img src={alertIcon} alt='Alert Icon' className="alert-icon" />
+            <p>We use the market rate. This is for informational purposes only.</p>
+          </div>
         </div>
 
       </section>
@@ -119,27 +126,3 @@ const App = () => {
 }
 
 export default App;
-
-//Opcioon 2
-/*
-<p>1 {currentToCurrency?.name} =  {(1 / (rates?.[toCurrencyInput])?.toFixed(2)).toFixed(2)} {currentFromCurrency?.symbol} </p>
-            <p>1 {currentFromCurrency?.name} = {(1 / (rates?.[toCurrencyInput])?.toFixed(2)).toFixed(2)} {currentToCurrency?.symbol}</p>
-*/
-
-//Opcion 1
-/* 
-<p>1 {currentToCurrency?.name} = {(1 / rates?.[toCurrencyInput]).toFixed(2)} {currentFromCurrency?.symbol} </p>
-            <p>1 {currentFromCurrency?.name} = {(rates?.[toCurrencyInput])?.toFixed(2)} {currentToCurrency?.symbol}</p>
-
-            {
-            allCurrencies &&
-            allCurrencies.map((currency: any) => {
-              return (
-                <div>
-                  <p>{currency[0]} - {currency[1].name} </p>
-                </div>
-              )
-            })
-
-          }
- */

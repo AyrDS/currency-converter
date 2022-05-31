@@ -20,10 +20,228 @@
     }
 
     p {
-        font-size: 34px;
+        font-size: 24px;
         font-weight: bold;
         text-align: center;
         margin-top: 8%;
-        line-height: 39px;
+        line-height: 30px;
+        width: 75%;
+
+        @media (min-width: 1024px) {
+            font-size: 34px;
+            line-height: 39px;
+            width: auto;
+        }
+    }
+}
+
+.change-container {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    right: 0%;
+    bottom: 0%;
+    margin: auto;
+    background-color: #fff;
+    border-radius: 8px;
+    border: 1px solid #E7EAF3;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    justify-content: center;
+    width: 95vw;
+    height: 75vh;
+    padding: 15px 15px;
+
+    @media (min-width: 390px) {
+        height: 559px;
+        bottom: 10%;
+    }
+
+    @media (min-width: 1024px) {
+        grid-template-columns: repeat(2, 1fr);
+        height: 522px;
+        padding: 0;
+        bottom: 0;
+    }
+
+    @media (min-width: 1440px) {
+        width: 1381px;
+    }
+}
+
+.change-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 22px;
+    height: 100%;
+
+    @media (min-width: 1024px) {
+        gap: 10%;
+        align-items: center;
+    }
+
+    .change-form_labels {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        label {
+            line-height: 20px;
+            margin-bottom: 8px;
+            color: #393939;
+            font-size: 14px;
+        }
+
+        input,
+        select {
+            padding: 10px 16px;
+            width: 90%;
+            height: 40px;
+            font-size: 16px;
+            color: #323232;
+
+            @media (min-width: 390px) {
+                width: 326px;
+            }
+
+            @media (min-width: 1024px) {
+                width: 380px;
+            }
+        }
+
+        #amount {
+            text-align: end;
+            -moz-appearance: textfield;
+
+            &::-webkit-inner-spin-button,
+            &::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+        }
+    }
+}
+
+.change-info {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    margin-top: 28px;
+    // margin-left: 119px;
+
+    @media (min-width: 1024px) {
+        margin-top: 67px;
+    }
+
+    .change-info_containerCurrency {
+        margin-top: 28px;
+
+        font-size: 14px;
+        line-height: 18px;
+        color: #757575;
+
+        @media (min-width: 1024px) {
+            margin-top: 55px;
+            font-size: 20px;
+            line-height: 25px;
+        }
+
+        p {
+            &:first-child {
+                margin-bottom: 12px;
+            }
+        }
+    }
+}
+
+.change-info_current {
+    font-size: 14px;
+    color: #757575;
+    line-height: 25px;
+
+    @media (min-width: 1024px) {
+        font-size: 30px;
+        line-height: 37.5px;
+    }
+}
+
+.change-info_exchange {
+    font-size: 20px;
+    line-height: 50px;
+    color: #323232;
+    margin-top: 8px;
+    font-weight: bold;
+
+    @media (min-width: 1024px) {
+        font-size: 40px;
+        margin-top: 16px;
+
+    }
+}
+
+.container-switch {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    @media (min-width: 1024px) {
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-end;
+        margin-left: 9%;
+    }
+}
+
+.switch-btn {
+    margin-top: 25px;
+    width: 34px;
+    display: block;
+    cursor: pointer;
+    align-self: flex-start;
+
+    @media (min-width: 768px) {
+        align-self: center;
+
+    }
+
+    @media (min-width: 1024px) {
+        margin-left: 24px;
+        margin-top: 0;
+        align-self: flex-end;
+    }
+}
+
+.change-alert {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    gap: 8px;
+    background-color: #FCEAC0;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 60px;
+
+    @media (min-width: 1024px) {
+        position: static;
+        bottom: auto;
+        width: 492px;
+        margin-top: 55px;
+    }
+
+    img {
+        width: 16px;
+        height: 16px;
+    }
+
+    p {
+        color: #393939;
+        font-size: 12px;
+        line-height: 18px;
     }
 }
