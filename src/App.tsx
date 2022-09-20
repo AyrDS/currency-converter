@@ -36,7 +36,7 @@ const App = () => {
 
   const [totalExchange, setTotalExchange] = useState<number>();
 
-  const [rates, setRates] = useState<any>()
+  const [rates, setRates] = useState<{ [key: string]: number }>({})
 
   useEffect(() => {
     Promise.all([fetch(promises[0]), fetch(promises[1])])
@@ -59,8 +59,8 @@ const App = () => {
 
   useEffect(() => {
     if (rates) {
-      const fromCurrency = Number(rates[fromCurrencyInput].toFixed(2));
-      const toCurrency = Number(rates[toCurrencyInput].toFixed(2));
+      const fromCurrency = Number(rates[fromCurrencyInput]?.toFixed(2));
+      const toCurrency = Number(rates[toCurrencyInput]?.toFixed(2));
       setTotalExchange(amount * (toCurrency / fromCurrency));
     }
   }, [rates, fromCurrencyInput, toCurrencyInput, amount]);
@@ -94,7 +94,7 @@ const App = () => {
         <form className="change-form" onSubmit={e => e.preventDefault()} >
           <div className="change-form_labels" >
             <label htmlFor="amount" >Amount</label>
-            <input name="amount" type="number" id="amount" min={0} value={amount} onChange={handleAmountChange} />
+            <input name="amount" type="text" id="amount" min={0} pattern="\d*" maxLength={6} value={amount} onChange={handleAmountChange} />
           </div>
 
           <div className="container-switch">

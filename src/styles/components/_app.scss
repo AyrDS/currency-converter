@@ -4,7 +4,7 @@
 }
 
 .coverPage {
-    background-image: url('../../assets/coverPage-cel.png');
+    background-image: url('../../assets/banner.jpg');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -15,7 +15,7 @@
     align-items: center;
 
     @media (min-width: 1024px) {
-        background-image: url('../../assets/coverPage.png');
+        background-image: url('../../assets/banner.jpg');
         height: 480px;
     }
 
@@ -44,7 +44,7 @@
     margin: auto;
     background-color: #fff;
     border-radius: 8px;
-    border: 1px solid #E7EAF3;
+    border: 1px solid #808080;
     display: grid;
     grid-template-columns: 1fr;
     align-items: center;
@@ -203,11 +203,9 @@
     width: 34px;
     display: block;
     cursor: pointer;
-    align-self: flex-start;
 
     @media (min-width: 768px) {
         align-self: center;
-
     }
 
     @media (min-width: 1024px) {
