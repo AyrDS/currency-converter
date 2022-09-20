@@ -1,6 +1,6 @@
 # Currency converter
 
-Aplicación de cambio de divisas utilizando la api de [vatcomply](https://www.vatcomply.com/documentation) y React.
+Aplicación de cambio de divisas utilizando la api de [vatcomply](https://www.vatcomply.com/documentation) y React TS.
 
 
 # INSTALACIÓN
